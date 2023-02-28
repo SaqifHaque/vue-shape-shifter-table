@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld/>
+    <ShapeShifterTable :headers="headers" :tableData="rows" :footers="footers" @addColumn="addColumn" @addRow="addRow"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/ShapeShifterTable.vue'
+import ShapeShifterTable from './components/ShapeShifterTable.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ShapeShifterTable
+  },
+  data () {
+    return {
+      headers: [],
+			rows: [],
+      footers: []
+    }
+  },
+  mounted() {
+    // this.footers.push({ field: '+', key:'row-action', event: true, fixed:'fixed-footer', eventName:"addRow" });
+    // this.headers.push({ field: '+', key: 'action', event: true, fixed: 'fixed-right', eventName: "addColumn" });
+  },
+  methods:{
+    addColumn(){
+      this.headers.push({ field: 'sample', key: "action1", editable: true });
+    },
+    addRow(){
+      this.rows.push({ field: 'sample', key: 'action5', editable: true });
+    },
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

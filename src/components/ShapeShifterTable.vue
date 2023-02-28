@@ -4,15 +4,15 @@
       <div class="col-md-12 table-fixed">
         <table class="table table-dark table-bordered mb-0 w-100">
           <thead>
-              <th scope="col"  v-for="header in headers" :key="header.key" :class="[header.fixed , {  'selected-blue' : checkColumnHoverEvent(header.columnOrder) , 'selected-white': checkColumnSelectEvent(header.columnOrder)}]" @mouseover="hoverEvent(header)" @click="onShiftEvent(header)">
+              <th scope="col"  v-for="header in headers" :key="header.key" :class="[header.fixed, {  'selected-blue' : checkColumnHoverEvent(header.columnOrder) , 'selected-white': checkColumnSelectEvent(header.columnOrder)}]" @mouseover="hoverEvent(header)" @click="onShiftEvent(header)">
                 <div v-if="!header.event" class="d-flex justify-content-between">
                   <div v-if="header.editable && !dragColumn">
                     <span
                       @click="initiateTextField('customHead_' + header.key)"
                       v-if="!checkClickEvent('customHead_' + header.key)"
-                      class="tabledit-span"
-                      >{{ header.field }}</span
-                    >
+                      class="tabledit-span">
+                       {{ header.field }}
+                      </span>
                     <input
                       v-if="checkClickEvent('customHead_' + header.key)"
                       @keydown.enter="checkField()"
@@ -26,9 +26,9 @@
                   </div>
                   <div v-if="!header.editable || dragColumn">
                     <span 
-                      class="tabledit-span"
-                      >{{ header.field }}</span
-                    >
+                      class="tabledit-span">
+                        {{ header.field }}
+                    </span>
                   </div>
                   <div v-if="header.context_menu && !dragColumn">
                     <div class="dropdown-menu-wrapper">
@@ -39,8 +39,10 @@
                       </div>
                   </div>
                 </div>
-                <button v-if="header.event" @click.prevent="handleAction(header.eventName, header.key)" class="link-default-sm color-lighter-1">{{ header.field }}</button>
               </th> 
+              <th>
+                <button v-if="columnPlus" @click.prevent="handleAddColumn" class="link-default-sm color-lighter-1">+</button>
+              </th>
           </thead>
           <tbody>
             <tr v-for="(rows, index) in tableData" :key="index">
@@ -83,9 +85,13 @@
                       </div>
                   </div>
                 </div>
-                <button v-if="row.event && !row.icon" @click.prevent="handleAction(row.eventName)" class="link-default-sm color-lighter-1">{{ row.field }}</button>
-                <span v-if="row.icon" @click="handleAction(row.eventName, row.key)" :class="row.icon"></span>
               </td>
+            </tr>
+            <tr>
+              <td>
+                <button v-if="rowPlus" @click.prevent="handleAddRow" class="link-default-sm color-lighter-1">+</button>
+              </td>
+              <!-- <span v-if="row.icon" @click="handleAction(row.eventName, row.key)" :class="row.icon"></span> -->
             </tr>
           </tbody>
           <tfoot>
@@ -105,14 +111,15 @@ export default {
   props: ['headers', 'tableData', 'footers'],
   data() {
     return {
-      style_Id: this.$route.params.id2,
       selected: null,
       colSelected: null,
       rowSelected: null,
       columnHover: null,
       rowHover: null,
       dragColumn: false,
-      dragRow: false
+      dragRow: false,
+      columnPlus: true,
+      rowPlus: true,
     };
   },
   computed: {
@@ -165,8 +172,11 @@ export default {
           this.rowHover = null;
       } 
     },
-    handleAction(actionEvent, key){
-      this.$emit(actionEvent, key);
+    handleAddColumn(){
+      this.$emit('addColumn');
+    },
+    handleAddRow(){
+      this.$emit('addRow');
     },
     handleContextEvent(contextEvent){
       if(contextEvent.event === 'shift_column'){
@@ -192,7 +202,7 @@ export default {
     },
     checkField(){
       this.selected = null;
-    }
+    },
   }
 };
 </script>
@@ -330,9 +340,9 @@ export default {
   text-align: center;
   vertical-align: middle;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   background-color: transparent;
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
