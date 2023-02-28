@@ -25,10 +25,21 @@ export default {
   },
   methods:{
     addColumn(){
-      this.headers.push({ field: 'sample', key: "action1", editable: true });
+      if(this.rows.length == 0)
+        this.headers.push({ field: 'sample', key: 'col_' + this.headers.length, editable: true });
+      else {
+        this.headers.push({ field: 'sample', key: 'col_' + this.headers.length, editable: true });
+        this.rows.map((row, index) => {
+            return row.push({ field: 'sample', key: 'row_' + index + this.headers.length, editable: true });
+        })  
+      }
     },
     addRow(){
-      this.rows.push({ field: 'sample', key: 'action5', editable: true });
+      let row = [];
+      this.headers.forEach((header, index) => {
+        row.push({ field: 'sample', key: 'row_' + this.rows.length + index, editable: true });
+      })
+      this.rows.push(row);
     },
   }
 }

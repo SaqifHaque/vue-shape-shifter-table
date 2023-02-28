@@ -88,16 +88,23 @@
               </td>
             </tr>
             <tr>
-              <td>
+              <!-- <td>
                 <button v-if="rowPlus" @click.prevent="handleAddRow" class="link-default-sm color-lighter-1">+</button>
               </td>
-              <!-- <span v-if="row.icon" @click="handleAction(row.eventName, row.key)" :class="row.icon"></span> -->
+              <span v-if="row.icon" @click="handleAction(row.eventName, row.key)" :class="row.icon"></span> -->
             </tr>
           </tbody>
           <tfoot>
             <tr v-for="footer in footers" :key="footer.key">
               <td :class="footer.fixed" :colspan=" calculateColSpan">
-                <button @click.prevent="handleAction(footer.eventName)" class="link-default-sm  color-lighter-1">{{ footer.field }}</button>
+                <!-- <button @click.prevent="handleAction(footer.eventName)" class="link-default-sm  color-lighter-1">{{ footer.field }}</button
+                > -->
+                
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button v-if="rowPlus" @click.prevent="handleAddRow" class="link-default-sm color-lighter-1" :disabled='this.headers.length == 0'>+</button>
               </td>
             </tr>
           </tfoot>
