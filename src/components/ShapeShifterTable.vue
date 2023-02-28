@@ -39,6 +39,9 @@
                       </div>
                   </div>
                 </div>
+                <td>
+                <span v-if="rowPlus" @click="deleteColumn">d</span>
+              </td>
               </th> 
               <th>
                 <button v-if="columnPlus" @click.prevent="handleAddColumn" class="link-default-sm color-lighter-1">+</button>
@@ -86,12 +89,16 @@
                   </div>
                 </div>
               </td>
+              <td>
+                <span v-if="rowPlus" @click="deleteRow">delete</span>
+              </td>
             </tr>
             <tr>
               <!-- <td>
                 <button v-if="rowPlus" @click.prevent="handleAddRow" class="link-default-sm color-lighter-1">+</button>
               </td>
               <span v-if="row.icon" @click="handleAction(row.eventName, row.key)" :class="row.icon"></span> -->
+
             </tr>
           </tbody>
           <tfoot>
@@ -127,6 +134,8 @@ export default {
       dragRow: false,
       columnPlus: true,
       rowPlus: true,
+      headerList: [],
+      rowList: [],
     };
   },
   computed: {
@@ -180,10 +189,25 @@ export default {
       } 
     },
     handleAddColumn(){
-      this.$emit('addColumn');
+      this.headerList = this.headers;
+      this.rowList = this.tableData;
+       if(this.tableData.length == 0)
+        this.headerList.push({ field: 'sample', key: 'col_' + this.headers.length, editable: true });
+      else {
+        this.headerList.push({ field: 'sample', key: 'col_' + this.headers.length, editable: true });
+        this.rowList.map((row, index) => {
+            return row.push({ field: 'sample', key: 'row_' + index + this.headers.length, editable: true });
+        })  
+      }
     },
     handleAddRow(){
-      this.$emit('addRow');
+      let row = [];
+      this.headerList = this.headers;
+      this.rowList = this.tableData;
+      this.headerList.forEach((header, index) => {
+        row.push({ field: 'sample', key: 'row_' + this.tableData.length + index, editable: true });
+      })
+      this.rowList.push(row);
     },
     handleContextEvent(contextEvent){
       if(contextEvent.event === 'shift_column'){
@@ -210,6 +234,15 @@ export default {
     checkField(){
       this.selected = null;
     },
+    deleteRow() {
+      this.rowList.splice(-1);
+    },
+    deleteColumn() {
+      this.headerList.splice(-1);
+      this.rowList.map((row) => {
+        return row.splice(-1);
+      })
+    }
   }
 };
 </script>

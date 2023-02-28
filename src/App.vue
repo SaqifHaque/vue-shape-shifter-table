@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ShapeShifterTable :headers="headers" :tableData="rows" :footers="footers" @addColumn="addColumn" @addRow="addRow"/>
+    <ShapeShifterTable :headers="headers" :tableData="rows" :footers="footers"/>
   </div>
 </template>
 
@@ -20,8 +20,10 @@ export default {
     }
   },
   mounted() {
-    // this.footers.push({ field: '+', key:'row-action', event: true, fixed:'fixed-footer', eventName:"addRow" });
-    // this.headers.push({ field: '+', key: 'action', event: true, fixed: 'fixed-right', eventName: "addColumn" });
+    let row= [];
+    row.push({ field: 'mubu', key:'row-action', editable: true});
+    this.rows.push(row);
+    this.headers.push({ field: 'habu', key: 'col-action', editable: true });
   },
   methods:{
     addColumn(){
