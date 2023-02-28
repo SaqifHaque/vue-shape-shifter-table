@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <ShapeShifterTable :headers="headers" :tableData="rows" :footers="footers"/>
+    <ShapeShifterTable :headers="headers" :tableData="rows" :footers="footers"
+     :contextMenuColumn="context_menu_column" :contextMenuRow="context_menu_row"/>
   </div>
 </template>
 
@@ -16,7 +17,16 @@ export default {
     return {
       headers: [],
 			rows: [],
-      footers: []
+      footers: [],
+      context_menu_column: [
+				{ text: 'Shift Column', event: 'shift_column' },
+				// { text: 'Insert at right', event: 'insert_column_right' },
+				{ text: 'Delete Size', event: 'delete_size' }
+			],
+			context_menu_row: [
+				{ text: 'Shift Row', event: 'shift_row' },
+				{ text: 'Delete Row', event: 'delete_row' }
+			],
     }
   },
   mounted() {

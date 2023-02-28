@@ -30,11 +30,11 @@
                         {{ header.field }}
                     </span>
                   </div>
-                  <div v-if="header.context_menu && !dragColumn">
+                  <div v-if="contextMenuColumn && !dragColumn">
                     <div class="dropdown-menu-wrapper">
                         <i class="icon-more_vert"></i>
                         <div class="dropdown-menu">
-                          <a v-for="link in header.context_menu_value" :key="link.event" @click="handleContextEvent({ menu_id: header.key, event: link.event })">{{ link.text }}</a>
+                          <a v-for="link in contextMenuColumn" :key="link.event" @click="handleContextEvent({ menu_id: header.key, event: link.event })">{{ link.text }}</a>
                         </div>
                       </div>
                   </div>
@@ -79,11 +79,11 @@
                       >{{ row.field }}</span
                     >
                   </div>
-                  <div v-if="row.context_menu && !dragColumn">
+                  <div v-if="contextMenuRow && !dragColumn">
                     <div class="dropdown-menu-wrapper">
                         <i class="icon-more_vert"></i>
                         <div class="dropdown-menu">
-                          <a v-for="link in row.context_menu_value" :key="link.event" @click="handleContextEvent({ menu_id: row.key, event: link.event })">{{ link.text }}</a>
+                          <a v-for="link in contextMenuRow" :key="link.event" @click="handleContextEvent({ menu_id: row.key, event: link.event })">{{ link.text }}</a>
                         </div>
                       </div>
                   </div>
@@ -122,7 +122,7 @@
 </template>
 <script>
 export default {
-  props: ['headers', 'tableData', 'footers'],
+  props: ['headers', 'tableData', 'footers', 'contextMenuColumn', 'contextMenuRow'],
   data() {
     return {
       selected: null,
@@ -391,4 +391,78 @@ export default {
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+}
+
+.dropdown-menu-wrapper:hover .dropdown-menu {
+  display: flex !important;
+}
+
+.dropdown-menu-wrapper .dropdown-menu {
+  border-top-left-radius: 0px;
+  z-index: 1000 !important;
+  background-color: #101018;
+  color: #fff;
+}
+.dropdown-menu-wrapper .dropdown-menu a {
+  cursor: pointer;
+}
+.dropdown-menu-wrapper .dropdown-menu a:hover {
+  color: white;
+}
+.dropdown-menu-wrapper:hover .dropdown-menu {
+  top: 50%;
+  left: 50%;
+  z-index: 1000 !important;
+}
+.dropdown-menu-wrapper:hover .dropdown-menu {
+  width: 100%;
+}
+
+.table-fixed th .dropdown-menu-wrapper:hover .dropdown-menu {
+  top: 90% !important;
+  left: 40% !important;
+  z-index: 1000 !important;
+}
+
+.table-fixed .fixed-left .dropdown-menu-wrapper:hover .dropdown-menu {
+  top: -50% !important;
+  left: 90% !important;
+  z-index: 1000 !important;
+}
+
+
+/* .dropdown-menu-wrapper {
+  font-size: 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 !important;
+   border-top-left-radius: 0px;
+  z-index: 1000 !important;
+  background-color: #101018;
+  color: #fff;
+  cursor: pointer;
+  color: white;
+  top: 50%;
+  left: 50%;
+  z-index: 1000 !important;
+} */
 </style>
